@@ -14,6 +14,7 @@ import AdminPages from "./pages/admin/AdminPages";
 import { ApplicationContext } from "./context/application/ApplicationContext";
 import jwt_decode from "jwt-decode";
 import { CookiesProvider } from "react-cookie";
+import AdminDashboardPages from "./pages/admin/AdminDashboardPages";
 
 const errorLink = onError(({ graphqlErrors, networkError }: any) => {
   if (graphqlErrors) {
@@ -28,11 +29,10 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   const customHeaders = operation.getContext().hasOwnProperty("headers")
     ? operation.getContext().headers
     : {};
-  console.log(customHeaders);
   // add the authorization to the headers
   operation.setContext({
     headers: {
-      auth: "123123",
+      ...customHeaders,
     },
   });
   return forward(operation);
@@ -74,6 +74,18 @@ const App: React.FC = () => {
               <Switch>
                 <Route path="/" exact component={IndexPages} />
                 <Route path="/admin" exact component={AdminPages} />
+                {local && (
+                  <>
+                    <Route
+                      path="/admin/dashboard"
+                      exact
+                      component={AdminDashboardPages}
+                    />
+                  </>
+                )}
+                <Route exact>
+                  <p>no</p>
+                </Route>
               </Switch>
             </BrowserRouter>
           </ApolloProvider>

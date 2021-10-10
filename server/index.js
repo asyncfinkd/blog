@@ -27,9 +27,6 @@ async function startServer() {
     try {
       const data = verify(accessToken, env.ACCESS_TOKEN);
       req.email = data.email;
-      // console.log("data: " + data);
-      console.log("data.email: " + data.email);
-      console.log("req.email: " + req.email);
     } catch {}
     next();
   });

@@ -29,33 +29,25 @@ const resolvers = {
         return null;
       }
 
-      const { email } = result;
-      const refresh_token = sign(
-        {
-          email,
-        },
-        env.ACCESS_TOKEN,
-        {
-          expiresIn: "7d",
-        }
-      );
+      const { email, firstName, lastName, fullName } = result;
       const access_token = sign(
         {
           email,
+          firstName,
+          lastName,
+          fullName,
         },
         env.ACCESS_TOKEN,
         {
-          expiresIn: "15min",
+          expiresIn: "12h",
         }
       );
 
-      res.cookie("refresh-token", refresh_token);
       res.cookie("access-token", access_token);
 
       return result
         ? {
             access_token: access_token,
-            refresh_token: refresh_token,
           }
         : { text: "error" };
     },

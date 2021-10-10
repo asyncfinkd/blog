@@ -8,8 +8,8 @@ import { useMutation } from "@apollo/client";
 import { ADMIN_LOGIN_MUTATION } from "../../api/Mutation";
 import { ApplicationContext } from "../../context/application/ApplicationContext";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
-import Me from "../../components/Me";
+import { useHistory, useLocation } from "react-router-dom";
+// import Me from "../../components/Me";
 
 type Inputs = {
   email: string;
@@ -32,6 +32,16 @@ const schema = yup
   .required();
 
 const AdminPages: React.FC = () => {
+  const { pathname } = useLocation();
+  const history = useHistory();
+  useEffect(() => {
+    if (localStorage.getItem("local")) {
+      history.push("/admin/dashboard");
+    }
+  });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const {
     register,
     handleSubmit,
@@ -43,18 +53,14 @@ const AdminPages: React.FC = () => {
 
   const [showLoginNotification, setShowLoginNotification] =
     useState<Boolean>(false);
-  const [cookies, setCookie] = useCookies(["access_token"]);
-  const [cookiesForRefreshToken, setCookieForRefreshToken] = useCookies([
-    "refresh_token",
-  ]);
+
   const [adminIdentification, { data, loading }] = useMutation(
     ADMIN_LOGIN_MUTATION,
     {
       // refetchQueries: [{query}]
       context: {
         headers: {
-          refresh_token: JSON.stringify(cookiesForRefreshToken),
-          access_token: JSON.stringify(cookies),
+          access_token: localStorage.getItem("local"),
         },
       },
     }
@@ -66,17 +72,8 @@ const AdminPages: React.FC = () => {
       if (data.adminIdentification.text == null) {
         setJwtDecode(data.adminIdentification.access_token);
         localStorage.setItem("local", data.adminIdentification.access_token);
-        setCookie("access_token", data.adminIdentification.access_token, {
-          path: "/",
-        });
-        setCookieForRefreshToken(
-          "refresh_token",
-          data.adminIdentification.refresh_token,
-          {
-            path: "/",
-          }
-        );
         setShowLoginNotification(false);
+        history.push("/admin/dashboard");
       } else {
         setShowLoginNotification(true);
       }
@@ -86,7 +83,7 @@ const AdminPages: React.FC = () => {
   const [showPassword, setShowPassword] = useToggle();
   return (
     <>
-      <Me />
+      {/* <Me /> */}
       <div className="form__admin__containerBody">
         <form
           onSubmit={handleSubmit((data: Inputs) => {

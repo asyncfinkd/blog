@@ -13,15 +13,8 @@ const typeDefs = gql`
   }
 
   type Admin {
-    _id: ID
-    fullName: String
-    firstName: String
-    lastName: String
-    email: String
-    password: String
     text: String
     access_token: String
-    refresh_token: String
   }
 
   # Queries

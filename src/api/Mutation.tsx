@@ -15,7 +15,6 @@ export const ADMIN_LOGIN_MUTATION = gql`
     adminIdentification(email: $email, password: $password) {
       text
       access_token
-      refresh_token
     }
   }
 `;
