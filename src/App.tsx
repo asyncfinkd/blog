@@ -8,16 +8,10 @@ import {
   ApolloLink,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import IndexPages from "./pages/index/IndexPages";
-import AdminPages from "./pages/admin/AdminPages";
+import { BrowserRouter, Switch } from "react-router-dom";
 import { ApplicationContext } from "./context/application/ApplicationContext";
 import jwt_decode from "jwt-decode";
 import { CookiesProvider } from "react-cookie";
-import AdminDashboardPages from "./pages/admin/AdminDashboardPages";
-import Header from "./components/header/Header";
-import AboutPages from "./pages/about/AboutPages";
-import Footer from "./components/footer/Footer";
 import Routers from "./constants/Routes";
 
 const errorLink = onError(({ graphqlErrors, networkError }: any) => {
@@ -29,11 +23,9 @@ const errorLink = onError(({ graphqlErrors, networkError }: any) => {
 });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
-  // receving context set in mutation. you can set anyting in context and get here
   const customHeaders = operation.getContext().hasOwnProperty("headers")
     ? operation.getContext().headers
     : {};
-  // add the authorization to the headers
   operation.setContext({
     headers: {
       ...customHeaders,
@@ -87,25 +79,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-{
-  /* <Route path="/" exact>
-<Header />
-<IndexPages />
-<Footer />
-</Route>
-<Route path="/about" exact component={AboutPages} />
-<Route path="/admin" exact component={AdminPages} />
-{local && (
-<>
-  <Route
-    path="/admin/dashboard"
-    exact
-    component={AdminDashboardPages}
-  />
-</>
-)}
-<Route exact>
-<p>no</p>
-</Route> */
-}
