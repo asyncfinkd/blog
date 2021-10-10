@@ -10,6 +10,7 @@ const GetUsers: React.FC = () => {
     if (data !== undefined) {
       setUsers(data.getAllUsers);
     }
+    console.log(data);
   }, [data]);
   return (
     <>

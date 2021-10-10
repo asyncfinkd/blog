@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ApolloClient,
   InMemoryCache,
@@ -7,8 +7,10 @@ import {
   from,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import GetUsers from "./components/GetUsers";
-import Form from "./components/Form";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import IndexPages from "./pages/index/IndexPages";
+import AdminPages from "./pages/admin/AdminPages";
+import { ApplicationContext } from "./context/application/ApplicationContext";
 
 const errorLink = onError(({ graphqlErrors, networkError }: any) => {
   if (graphqlErrors) {
@@ -28,13 +30,27 @@ const client = new ApolloClient({
   link: link,
 });
 
+interface Props {
+  firstName?: String;
+  lastName?: String;
+  email?: String;
+  fullName?: String;
+}
+
 const App: React.FC = () => {
+  const [jwtDecode, setJwtDecode] = useState<Props[] | []>([]);
   return (
     <>
-      <ApolloProvider client={client}>
-        <GetUsers />
-        {/* <Form /> */}
-      </ApolloProvider>
+      <ApplicationContext.Provider value={{}}>
+        <ApolloProvider client={client}>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" exact component={IndexPages} />
+              <Route path="/admin" exact component={AdminPages} />
+            </Switch>
+          </BrowserRouter>
+        </ApolloProvider>
+      </ApplicationContext.Provider>
     </>
   );
 };
