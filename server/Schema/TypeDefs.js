@@ -7,6 +7,11 @@ const typeDefs = gql`
     married: Boolean!
   }
 
+  type Me {
+    email: String
+    _id: ID
+  }
+
   type Admin {
     _id: ID
     fullName: String
@@ -16,6 +21,7 @@ const typeDefs = gql`
     password: String
     text: String
     access_token: String
+    refresh_token: String
   }
 
   # Queries
@@ -27,6 +33,7 @@ const typeDefs = gql`
   type Mutation {
     createUser(name: String!, age: Int!, married: Boolean!): User!
     adminIdentification(email: String!, password: String!): Admin
+    me: Me
   }
 `;
 

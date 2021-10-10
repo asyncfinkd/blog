@@ -5,6 +5,7 @@ import {
   ApolloProvider,
   HttpLink,
   from,
+  ApolloLink,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
@@ -12,6 +13,7 @@ import IndexPages from "./pages/index/IndexPages";
 import AdminPages from "./pages/admin/AdminPages";
 import { ApplicationContext } from "./context/application/ApplicationContext";
 import jwt_decode from "jwt-decode";
+import { CookiesProvider } from "react-cookie";
 
 const errorLink = onError(({ graphqlErrors, networkError }: any) => {
   if (graphqlErrors) {
@@ -21,9 +23,27 @@ const errorLink = onError(({ graphqlErrors, networkError }: any) => {
   }
 });
 
+const authMiddleware = new ApolloLink((operation, forward) => {
+  // receving context set in mutation. you can set anyting in context and get here
+  const customHeaders = operation.getContext().hasOwnProperty("headers")
+    ? operation.getContext().headers
+    : {};
+  console.log(customHeaders);
+  // add the authorization to the headers
+  operation.setContext({
+    headers: {
+      auth: "123123",
+    },
+  });
+  return forward(operation);
+});
+
 const link = from([
   errorLink,
-  new HttpLink({ uri: "http://localhost:3001/graphql" }),
+  new HttpLink({
+    uri: "http://localhost:3001/graphql",
+  }),
+  authMiddleware,
 ]);
 
 const client = new ApolloClient({
@@ -47,16 +67,18 @@ const App: React.FC = () => {
   }, [local]);
   return (
     <>
-      <ApplicationContext.Provider value={{ jwtDecode, setJwtDecode }}>
-        <ApolloProvider client={client}>
-          <BrowserRouter>
-            <Switch>
-              <Route path="/" exact component={IndexPages} />
-              <Route path="/admin" exact component={AdminPages} />
-            </Switch>
-          </BrowserRouter>
-        </ApolloProvider>
-      </ApplicationContext.Provider>
+      <CookiesProvider>
+        <ApplicationContext.Provider value={{ jwtDecode, setJwtDecode }}>
+          <ApolloProvider client={client}>
+            <BrowserRouter>
+              <Switch>
+                <Route path="/" exact component={IndexPages} />
+                <Route path="/admin" exact component={AdminPages} />
+              </Switch>
+            </BrowserRouter>
+          </ApolloProvider>
+        </ApplicationContext.Provider>
+      </CookiesProvider>
     </>
   );
 };

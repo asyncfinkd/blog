@@ -8,6 +8,8 @@ import { useMutation } from "@apollo/client";
 import { ADMIN_LOGIN_MUTATION } from "../../api/Mutation";
 import { ApplicationContext } from "../../context/application/ApplicationContext";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
+import Me from "../../components/Me";
 
 type Inputs = {
   email: string;
@@ -38,16 +40,42 @@ const AdminPages: React.FC = () => {
     resolver: yupResolver(schema),
   });
   const { setJwtDecode } = useContext(ApplicationContext);
-  const [adminIdentification, { data, loading }] =
-    useMutation(ADMIN_LOGIN_MUTATION);
+
   const [showLoginNotification, setShowLoginNotification] =
     useState<Boolean>(false);
+  const [cookies, setCookie] = useCookies(["access_token"]);
+  const [cookiesForRefreshToken, setCookieForRefreshToken] = useCookies([
+    "refresh_token",
+  ]);
+  const [adminIdentification, { data, loading }] = useMutation(
+    ADMIN_LOGIN_MUTATION,
+    {
+      // refetchQueries: [{query}]
+      context: {
+        headers: {
+          refresh_token: JSON.stringify(cookiesForRefreshToken),
+          access_token: JSON.stringify(cookies),
+        },
+      },
+    }
+  );
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       if (data.adminIdentification.text == null) {
         setJwtDecode(data.adminIdentification.access_token);
         localStorage.setItem("local", data.adminIdentification.access_token);
+        setCookie("access_token", data.adminIdentification.access_token, {
+          path: "/",
+        });
+        setCookieForRefreshToken(
+          "refresh_token",
+          data.adminIdentification.refresh_token,
+          {
+            path: "/",
+          }
+        );
         setShowLoginNotification(false);
       } else {
         setShowLoginNotification(true);
@@ -58,6 +86,7 @@ const AdminPages: React.FC = () => {
   const [showPassword, setShowPassword] = useToggle();
   return (
     <>
+      <Me />
       <div className="form__admin__containerBody">
         <form
           onSubmit={handleSubmit((data: Inputs) => {
