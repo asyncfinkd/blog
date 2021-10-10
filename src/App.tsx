@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ApolloClient,
   InMemoryCache,
@@ -11,6 +11,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import IndexPages from "./pages/index/IndexPages";
 import AdminPages from "./pages/admin/AdminPages";
 import { ApplicationContext } from "./context/application/ApplicationContext";
+import jwt_decode from "jwt-decode";
 
 const errorLink = onError(({ graphqlErrors, networkError }: any) => {
   if (graphqlErrors) {
@@ -31,17 +32,22 @@ const client = new ApolloClient({
 });
 
 interface Props {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  fullName?: String;
+  access_token?: String;
 }
 
 const App: React.FC = () => {
   const [jwtDecode, setJwtDecode] = useState<Props[] | []>([]);
+  const local: any = localStorage.getItem("local");
+  useEffect(() => {
+    if (local) {
+      let decoded: any = jwt_decode(local);
+      setJwtDecode(decoded);
+      console.log(decoded);
+    }
+  }, [local]);
   return (
     <>
-      <ApplicationContext.Provider value={{}}>
+      <ApplicationContext.Provider value={{ jwtDecode, setJwtDecode }}>
         <ApolloProvider client={client}>
           <BrowserRouter>
             <Switch>

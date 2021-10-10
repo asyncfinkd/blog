@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useToggle } from "../../lib/use-toggle";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import "../../styles/admin/signin/AdminSignin.css";
 import { useMutation } from "@apollo/client";
 import { ADMIN_LOGIN_MUTATION } from "../../api/Mutation";
+import { ApplicationContext } from "../../context/application/ApplicationContext";
 
 type Inputs = {
   email: string;
@@ -35,9 +36,16 @@ const AdminPages: React.FC = () => {
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
   });
-
-  const [adminIdentification, { data, loading, error }] =
+  const { setJwtDecode } = useContext(ApplicationContext);
+  const [adminIdentification, { data, loading }] =
     useMutation(ADMIN_LOGIN_MUTATION);
+
+  useEffect(() => {
+    if (data) {
+      setJwtDecode(data.adminIdentification.access_token);
+      localStorage.setItem("local", data.adminIdentification.access_token);
+    }
+  }, [data]);
 
   const [showPassword, setShowPassword] = useToggle();
   return (
@@ -96,7 +104,7 @@ const AdminPages: React.FC = () => {
           </div>
           <div>
             <button className="form__admin__button" type="submit">
-              შესვლა
+              {loading ? "დაელოდეთ..." : "შესვლა"}
             </button>
           </div>
         </form>
