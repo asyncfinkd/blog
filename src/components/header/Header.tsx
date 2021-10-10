@@ -1,24 +1,13 @@
-import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import { useToggle } from "../../lib/use-toggle";
 
 const Header: React.FC = () => {
   const [showHeader, setShowHeader] = useToggle();
   const [dropDownActive, setDropDownActive] = useToggle();
-  const { pathname } = useLocation();
-  useEffect(() => {
-    if (window.scrollY > 100) {
-      document.getElementById("header")?.classList.add("header-scrolled");
-    } else {
-      document.getElementById("header")?.classList.remove("header-scrolled");
-    }
-  }, [window]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
   return (
     <>
-      <header id="header" className="header fixed-top">
+      <header id="header" className="header fixed-top header-scrolled">
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
           <Link to="/" className="logo d-flex align-items-center">
             <img src="assets/img/logo.png" alt="" />

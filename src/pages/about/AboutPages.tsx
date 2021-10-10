@@ -1,6 +1,8 @@
 import React from "react";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+// import { ForLoading } from "../../utils/load/loadjs";
+import loadjs from "loadjs";
 
 const About: React.FC = () => {
   const { pathname } = useLocation();
