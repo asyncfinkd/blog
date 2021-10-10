@@ -21,19 +21,20 @@ const resolvers = {
         email: args.email,
         password: args.password,
       });
-      const { email, firstName, lastName, fullName } = result;
-      const access_token = jwt.sign(
-        {
-          email,
-          firstName,
-          lastName,
-          fullName,
-        },
-        env.ACCESS_TOKEN
-      );
-      return result
-        ? { access_token: access_token }
-        : { text: "Password or email is incorrect" };
+      const renderToken = () => {
+        const { email, firstName, lastName, fullName } = result;
+        const access_token = jwt.sign(
+          {
+            email,
+            firstName,
+            lastName,
+            fullName,
+          },
+          env.ACCESS_TOKEN
+        );
+        return access_token;
+      };
+      return result ? { access_token: renderToken() } : { text: "error" };
     },
   },
 };

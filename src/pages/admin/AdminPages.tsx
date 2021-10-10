@@ -7,6 +7,7 @@ import "../../styles/admin/signin/AdminSignin.css";
 import { useMutation } from "@apollo/client";
 import { ADMIN_LOGIN_MUTATION } from "../../api/Mutation";
 import { ApplicationContext } from "../../context/application/ApplicationContext";
+import { useState } from "react";
 
 type Inputs = {
   email: string;
@@ -39,11 +40,18 @@ const AdminPages: React.FC = () => {
   const { setJwtDecode } = useContext(ApplicationContext);
   const [adminIdentification, { data, loading }] =
     useMutation(ADMIN_LOGIN_MUTATION);
+  const [showLoginNotification, setShowLoginNotification] =
+    useState<Boolean>(false);
 
   useEffect(() => {
     if (data) {
-      setJwtDecode(data.adminIdentification.access_token);
-      localStorage.setItem("local", data.adminIdentification.access_token);
+      if (data.adminIdentification.text == null) {
+        setJwtDecode(data.adminIdentification.access_token);
+        localStorage.setItem("local", data.adminIdentification.access_token);
+        setShowLoginNotification(false);
+      } else {
+        setShowLoginNotification(true);
+      }
     }
   }, [data]);
 
@@ -89,6 +97,11 @@ const AdminPages: React.FC = () => {
             {errors.password && (
               <small className="form__admin__errorLabel">
                 {errors?.password?.message}
+              </small>
+            )}
+            {showLoginNotification && (
+              <small className="form__admin__errorLabel">
+                ელ.ფოსტა ან პაროლი არასწორია
               </small>
             )}
             <div
