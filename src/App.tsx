@@ -18,6 +18,7 @@ import AdminDashboardPages from "./pages/admin/AdminDashboardPages";
 import Header from "./components/header/Header";
 import AboutPages from "./pages/about/AboutPages";
 import Footer from "./components/footer/Footer";
+import Routers from "./constants/Routes";
 
 const errorLink = onError(({ graphqlErrors, networkError }: any) => {
   if (graphqlErrors) {
@@ -74,25 +75,9 @@ const App: React.FC = () => {
         <ApplicationContext.Provider value={{ jwtDecode, setJwtDecode }}>
           <ApolloProvider client={client}>
             <BrowserRouter>
-              <Header />
               <Switch>
-                <Route path="/" exact component={IndexPages} />
-                <Route path="/about" exact component={AboutPages} />
-                <Route path="/admin" exact component={AdminPages} />
-                {local && (
-                  <>
-                    <Route
-                      path="/admin/dashboard"
-                      exact
-                      component={AdminDashboardPages}
-                    />
-                  </>
-                )}
-                <Route exact>
-                  <p>no</p>
-                </Route>
+                <Routers />
               </Switch>
-              <Footer />
             </BrowserRouter>
           </ApolloProvider>
         </ApplicationContext.Provider>
@@ -102,3 +87,25 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+{
+  /* <Route path="/" exact>
+<Header />
+<IndexPages />
+<Footer />
+</Route>
+<Route path="/about" exact component={AboutPages} />
+<Route path="/admin" exact component={AdminPages} />
+{local && (
+<>
+  <Route
+    path="/admin/dashboard"
+    exact
+    component={AdminDashboardPages}
+  />
+</>
+)}
+<Route exact>
+<p>no</p>
+</Route> */
+}
