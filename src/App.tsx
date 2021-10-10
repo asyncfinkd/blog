@@ -15,6 +15,9 @@ import { ApplicationContext } from "./context/application/ApplicationContext";
 import jwt_decode from "jwt-decode";
 import { CookiesProvider } from "react-cookie";
 import AdminDashboardPages from "./pages/admin/AdminDashboardPages";
+import Header from "./components/header/Header";
+import AboutPages from "./pages/about/AboutPages";
+import Footer from "./components/footer/Footer";
 
 const errorLink = onError(({ graphqlErrors, networkError }: any) => {
   if (graphqlErrors) {
@@ -71,8 +74,10 @@ const App: React.FC = () => {
         <ApplicationContext.Provider value={{ jwtDecode, setJwtDecode }}>
           <ApolloProvider client={client}>
             <BrowserRouter>
+              <Header />
               <Switch>
                 <Route path="/" exact component={IndexPages} />
+                <Route path="/about" exact component={AboutPages} />
                 <Route path="/admin" exact component={AdminPages} />
                 {local && (
                   <>
@@ -87,6 +92,7 @@ const App: React.FC = () => {
                   <p>no</p>
                 </Route>
               </Switch>
+              <Footer />
             </BrowserRouter>
           </ApolloProvider>
         </ApplicationContext.Provider>

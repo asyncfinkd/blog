@@ -3,7 +3,7 @@ import React from "react";
 const IndexPages: React.FC = () => {
   return (
     <>
-      <p>Index Pages!</p>
+      <p>qwe</p>
     </>
   );
 };
