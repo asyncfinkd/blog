@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const Partners: React.FC = () => {
+const Partners: React.FC<any> = ({ props }: any) => {
   return (
     <>
-      <section id="clients" className="clients">
+      <section id="clients" className="clients" style={props}>
         <div className="container aos-init aos-animate" data-aos="fade-up">
           <header className="section-header">
             <h2>Our Clients</h2>

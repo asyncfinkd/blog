@@ -5,14 +5,6 @@ import { useToggle } from "../../lib/use-toggle";
 const Header: React.FC = () => {
   const [showHeader, setShowHeader] = useToggle();
   const [dropDownActive, setDropDownActive] = useToggle();
-  useEffect(() => {
-    let url = window.location.pathname;
-    if (url == "/") {
-      document.getElementById("qmqlmqlmq")?.classList.add("active");
-    } else {
-      document.getElementById("qmqlmqlmq")?.classList.remove("active");
-    }
-  });
   return (
     <>
       <header id="header" className="header fixed-top header-scrolled">
@@ -28,32 +20,19 @@ const Header: React.FC = () => {
           >
             <ul>
               <li>
-                <NavLink
-                  to="/"
-                  className="nav-link scrollto"
-                  id="qmqlmqlmq"
-                  activeClassName="active"
-                >
+                <a href="/" className="nav-link scrollto">
                   Home
-                </NavLink>
+                </a>
               </li>
               <li>
-                <NavLink
-                  className="nav-link scrollto"
-                  to="/about"
-                  activeClassName="active"
-                >
+                <a className="nav-link scrollto" href="/about">
                   About
-                </NavLink>
+                </a>
               </li>
               <li>
-                <NavLink
-                  className="nav-link scrollto"
-                  to="/partners"
-                  activeClassName="active"
-                >
+                <a className="nav-link scrollto" href="/partners">
                   Partners
-                </NavLink>
+                </a>
               </li>
               <li>
                 <a className="nav-link scrollto" href="#portfolio">

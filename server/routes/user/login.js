@@ -17,15 +17,13 @@ router.route("/login").post(async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: user._id,
         email: user.email,
       },
       env.ACCESS_TOKEN,
       { expiresIn: "2h" }
     );
-    res.json({ msg: "წარმატებული ავტორიზაცია ", success: true, token });
+    res.json({ msg: "წარმატებული ავტორიზაცია", success: true, token });
   } catch (err) {
-    console.log(err);
     res.json({ msg: "შეცდომა", err });
   }
 });

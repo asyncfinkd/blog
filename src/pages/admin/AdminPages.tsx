@@ -7,7 +7,9 @@ import "../../styles/admin/signin/AdminSignin.css";
 import { ApplicationContext } from "../../context/application/ApplicationContext";
 import { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-// import Me from "../../components/Me";
+import { useMutation } from "react-query";
+import axios from "axios";
+import env from "../../application/environment/env.json";
 
 type Inputs = {
   email: string;
@@ -30,6 +32,9 @@ const schema = yup
   .required();
 
 const AdminPages: React.FC = () => {
+  const mutation = useMutation((identification: any) => {
+    return axios.post(`${env.host}/api/login`, identification);
+  });
   const { pathname } = useLocation();
   const history = useHistory();
   useEffect(() => {
@@ -59,7 +64,7 @@ const AdminPages: React.FC = () => {
       <div className="form__admin__containerBody">
         <form
           onSubmit={handleSubmit((data: Inputs) => {
-            console.log(data);
+            mutation.mutate({ email: data.email, password: data.password });
           })}
           className="form__admin__container"
         >
