@@ -1,18 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { useToggle } from "../../lib/use-toggle";
 
 const Header: React.FC = () => {
   const [showHeader, setShowHeader] = useToggle();
   const [dropDownActive, setDropDownActive] = useToggle();
+  useEffect(() => {
+    let url = window.location.pathname;
+    if (url == "/") {
+      document.getElementById("qmqlmqlmq")?.classList.add("active");
+    } else {
+      document.getElementById("qmqlmqlmq")?.classList.remove("active");
+    }
+  });
   return (
     <>
       <header id="header" className="header fixed-top header-scrolled">
         <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-          <Link to="/" className="logo d-flex align-items-center">
+          <NavLink to="/" className="logo d-flex align-items-center">
             <img src="assets/img/logo.png" alt="" />
             <span>FlexStart</span>
-          </Link>
+          </NavLink>
 
           <nav
             id="navbar"
@@ -20,19 +28,32 @@ const Header: React.FC = () => {
           >
             <ul>
               <li>
-                <Link to="/" className="nav-link scrollto active">
+                <NavLink
+                  to="/"
+                  className="nav-link scrollto"
+                  id="qmqlmqlmq"
+                  activeClassName="active"
+                >
                   Home
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link className="nav-link scrollto" to="/about">
+                <NavLink
+                  className="nav-link scrollto"
+                  to="/about"
+                  activeClassName="active"
+                >
                   About
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <a className="nav-link scrollto" href="#services">
-                  Services
-                </a>
+                <NavLink
+                  className="nav-link scrollto"
+                  to="/partners"
+                  activeClassName="active"
+                >
+                  Partners
+                </NavLink>
               </li>
               <li>
                 <a className="nav-link scrollto" href="#portfolio">
