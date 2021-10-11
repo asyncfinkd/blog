@@ -4,8 +4,6 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import "../../styles/admin/signin/AdminSignin.css";
-import { useMutation } from "@apollo/client";
-import { ADMIN_LOGIN_MUTATION } from "../../api/Mutation";
 import { ApplicationContext } from "../../context/application/ApplicationContext";
 import { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
@@ -54,32 +52,6 @@ const AdminPages: React.FC = () => {
   const [showLoginNotification, setShowLoginNotification] =
     useState<Boolean>(false);
 
-  const [adminIdentification, { data, loading }] = useMutation(
-    ADMIN_LOGIN_MUTATION,
-    {
-      // refetchQueries: [{query}]
-      context: {
-        headers: {
-          access_token: localStorage.getItem("local"),
-        },
-      },
-    }
-  );
-
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-      if (data.adminIdentification.text == null) {
-        setJwtDecode(data.adminIdentification.access_token);
-        localStorage.setItem("local", data.adminIdentification.access_token);
-        setShowLoginNotification(false);
-        history.push("/admin/dashboard");
-      } else {
-        setShowLoginNotification(true);
-      }
-    }
-  }, [data]);
-
   const [showPassword, setShowPassword] = useToggle();
   return (
     <>
@@ -87,12 +59,7 @@ const AdminPages: React.FC = () => {
       <div className="form__admin__containerBody">
         <form
           onSubmit={handleSubmit((data: Inputs) => {
-            adminIdentification({
-              variables: {
-                email: data.email,
-                password: data.password,
-              },
-            });
+            console.log(data);
           })}
           className="form__admin__container"
         >
@@ -143,7 +110,7 @@ const AdminPages: React.FC = () => {
           </div>
           <div>
             <button className="form__admin__button" type="submit">
-              {loading ? "დაელოდეთ..." : "შესვლა"}
+              შესვლა
             </button>
           </div>
         </form>
