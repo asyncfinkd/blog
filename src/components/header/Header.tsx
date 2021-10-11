@@ -47,9 +47,13 @@ const Header: React.FC = () => {
                 </NavLink>
               </li>
               <li>
-                <a className="nav-link scrollto" href="#services">
-                  Services
-                </a>
+                <NavLink
+                  className="nav-link scrollto"
+                  to="/partners"
+                  activeClassName="active"
+                >
+                  Partners
+                </NavLink>
               </li>
               <li>
                 <a className="nav-link scrollto" href="#portfolio">

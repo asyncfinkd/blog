@@ -6,6 +6,7 @@ import AboutPages from "../pages/about/AboutPages";
 import AdminDashboardPages from "../pages/admin/AdminDashboardPages";
 import AdminPages from "../pages/admin/AdminPages";
 import IndexPages from "../pages/index/IndexPages";
+import PartnersPages from "../pages/partners/PartnersPages";
 
 const Routers = () => {
   const local = localStorage.getItem("local");
@@ -19,6 +20,11 @@ const Routers = () => {
     {
       path: "/about",
       ComponentToRender: AboutPages,
+      GlobalComponents: true,
+    },
+    {
+      path: "/partners",
+      ComponentToRender: PartnersPages,
       GlobalComponents: true,
     },
     {
