@@ -9,8 +9,7 @@ const AdminDashboardPages: React.FC = () => {
   }, [pathname]);
   return (
     <>
-      <p>Hello</p>
-    </>
+          </>
   );
 };
 

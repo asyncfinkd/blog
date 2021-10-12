@@ -1,10 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
-// const compression = require("compression");
+const compression = require("compression");
 const cors = require("cors");
 
 const app = express();
-// app.use(compression());
+app.use(compression());
 app.use(cors());
 app.use(express.json());
 

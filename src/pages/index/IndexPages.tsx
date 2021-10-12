@@ -5,10 +5,9 @@ import Blog from "../../components/blog/Blog";
 import Contact from "../../components/contact/Contact";
 import Hero from "../../components/hero/Hero";
 import Partners from "../../components/partners/Partners";
-// import loadjs from "loadjs";
+import { Helmet } from "react-helmet";
 
 const IndexPages: React.FC = () => {
-  // loadjs
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -16,6 +15,9 @@ const IndexPages: React.FC = () => {
 
   return (
     <>
+    <Helmet>
+      <title>ბავშვთა უფლებების "ცოდნის ცენტრი"</title>
+    </Helmet>
       <Hero />
       <Partners />
       <Blog />
