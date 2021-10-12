@@ -1,4 +1,5 @@
 import React from "react";
+import { useCookies } from "react-cookie";
 import { Route } from "react-router-dom";
 import Footer from "../components/footer/Footer";
 import Header from "../components/header/Header";
@@ -9,7 +10,7 @@ import IndexPages from "../pages/index/IndexPages";
 import PartnersPages from "../pages/partners/PartnersPages";
 
 const Routers = () => {
-  const local = localStorage.getItem("local");
+  const [cookies, setCookie] = useCookies(['local']);
 
   const routes = [
     {
@@ -36,7 +37,7 @@ const Routers = () => {
       path: "/admin/dashboard",
       ComponentToRender: AdminDashboardPages,
       dynamically: true,
-      dynamicallyCondition: local,
+      dynamicallyCondition: cookies,
       GlobalComponents: false,
     },
   ];

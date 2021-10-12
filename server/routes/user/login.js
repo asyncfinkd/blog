@@ -7,13 +7,13 @@ const env = require("../../env.json");
 router.route("/login").post(async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    !user && res.json({ msg: "მომხმარებელი ვერ მოიძებნა", success: false });
+    !user && res.json({ success: false });
 
     const validPassword = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    !validPassword && res.json({ msg: "პაროლი არასწორია", success: false });
+    !validPassword && res.json({ success: false });
 
     const token = jwt.sign(
       {
@@ -22,7 +22,10 @@ router.route("/login").post(async (req, res) => {
       env.ACCESS_TOKEN,
       { expiresIn: "2h" }
     );
-    res.json({ msg: "წარმატებული ავტორიზაცია", success: true, token });
+    res.json({
+      success: true,
+      access_token: token,
+    });
   } catch (err) {
     res.json({ msg: "შეცდომა", err });
   }

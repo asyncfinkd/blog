@@ -10,6 +10,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
 import env from "../../application/environment/env.json";
+import { useCookies } from "react-cookie";
+import Helmet from "react-helmet";
 
 type Inputs = {
   email: string;
@@ -32,13 +34,23 @@ const schema = yup
   .required();
 
 const AdminPages: React.FC = () => {
+  const [error, setError] = useState<boolean>(false);
+  const [cookies, setCookie] = useCookies(['local']);
   const mutation = useMutation((identification: any) => {
-    return axios.post(`${env.host}/api/login`, identification);
+    return axios.post(`${env.host}/api/login`, identification).then((result) => {
+      if(result.data.success === true) {
+        setCookie("local", result.data.access_token);
+        setJwtDecode(result.data.access_token);
+        history.push('/admin/dashboard');
+      } else {
+        setError(true);
+      }
+    });
   });
   const { pathname } = useLocation();
   const history = useHistory();
   useEffect(() => {
-    if (localStorage.getItem("local")) {
+    if (cookies) {
       history.push("/admin/dashboard");
     }
   });
@@ -54,13 +66,12 @@ const AdminPages: React.FC = () => {
   });
   const { setJwtDecode } = useContext(ApplicationContext);
 
-  const [showLoginNotification, setShowLoginNotification] =
-    useState<Boolean>(false);
-
   const [showPassword, setShowPassword] = useToggle();
   return (
     <>
-      {/* <Me /> */}
+    <Helmet>
+      <title>ადმინისტრატორით შესვლა – ბავშვთა უფლებების "ცოდნის ცენტრი"</title>
+    </Helmet>
       <div className="form__admin__containerBody">
         <form
           onSubmit={handleSubmit((data: Inputs) => {
@@ -97,10 +108,10 @@ const AdminPages: React.FC = () => {
                 {errors?.password?.message}
               </small>
             )}
-            {showLoginNotification && (
+            {error && (
               <small className="form__admin__errorLabel">
-                ელ.ფოსტა ან პაროლი არასწორია
-              </small>
+              ელ.ფოსტა ან პაროლი არასწორია
+            </small>
             )}
             <div
               className={
@@ -115,7 +126,7 @@ const AdminPages: React.FC = () => {
           </div>
           <div>
             <button className="form__admin__button" type="submit">
-              შესვლა
+              {mutation.isLoading ? "დაელოდეთ..." : "შესვლა"}
             </button>
           </div>
         </form>
