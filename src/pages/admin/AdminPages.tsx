@@ -12,11 +12,7 @@ import axios from "axios";
 import env from "../../application/environment/env.json";
 import { useCookies } from "react-cookie";
 import Helmet from "react-helmet";
-
-type Inputs = {
-  email: string;
-  password: string;
-};
+import { Inputs } from "../../types/admin/AdminPagesTypes";
 
 const schema = yup
   .object()
@@ -35,25 +31,27 @@ const schema = yup
 
 const AdminPages: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
-  const [cookies, setCookie] = useCookies(['local']);
+  const [cookies, setCookie] = useCookies(["local"]);
   const mutation = useMutation((identification: any) => {
-    return axios.post(`${env.host}/api/login`, identification).then((result) => {
-      if(result.data.success === true) {
-        setCookie("local", result.data.access_token);
-        setJwtDecode(result.data.access_token);
-        history.push('/admin/dashboard');
-      } else {
-        setError(true);
-      }
-    });
+    return axios
+      .post(`${env.host}/api/login`, identification)
+      .then((result) => {
+        if (result.data.success === true) {
+          setCookie("local", result.data.access_token);
+          setJwtDecode(result.data.access_token);
+          history.push("/admin/dashboard");
+        } else {
+          setError(true);
+        }
+      });
   });
   const { pathname } = useLocation();
   const history = useHistory();
   useEffect(() => {
-    if (cookies) {
+    if (cookies.local) {
       history.push("/admin/dashboard");
     }
-  });
+  }, [cookies.local]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -69,9 +67,11 @@ const AdminPages: React.FC = () => {
   const [showPassword, setShowPassword] = useToggle();
   return (
     <>
-    <Helmet>
-      <title>ადმინისტრატორით შესვლა – ბავშვთა უფლებების "ცოდნის ცენტრი"</title>
-    </Helmet>
+      <Helmet>
+        <title>
+          ადმინისტრატორით შესვლა – ბავშვთა უფლებების "ცოდნის ცენტრი"
+        </title>
+      </Helmet>
       <div className="form__admin__containerBody">
         <form
           onSubmit={handleSubmit((data: Inputs) => {
@@ -110,8 +110,8 @@ const AdminPages: React.FC = () => {
             )}
             {error && (
               <small className="form__admin__errorLabel">
-              ელ.ფოსტა ან პაროლი არასწორია
-            </small>
+                ელ.ფოსტა ან პაროლი არასწორია
+              </small>
             )}
             <div
               className={
