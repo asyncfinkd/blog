@@ -18,6 +18,7 @@ router.route("/login").post(async (req, res) => {
     const token = jwt.sign(
       {
         email: user.email,
+        _id: user._id
       },
       env.ACCESS_TOKEN,
       { expiresIn: "2h" }
