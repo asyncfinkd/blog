@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
-// import { ForLoading } from "../../utils/load/loadjs";
 
 const About: React.FC = () => {
   const { pathname } = useLocation();
@@ -10,6 +10,9 @@ const About: React.FC = () => {
   }, [pathname]);
   return (
     <>
+      <Helmet>
+        <title>შესახებ - ბავშვთა უფლებების "ცოდნის ცენტრი"</title>
+      </Helmet>
       <section id="about" className="about hero d-flex align-items-center">
         <div className="container aos-init aos-animate" data-aos="fade-up">
           <div className="row gx-0">
