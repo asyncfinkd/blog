@@ -15,7 +15,7 @@ const client = new QueryClient();
 
 const App: React.FC = () => {
   const [jwtDecode, setJwtDecode] = useState<Props[] | []>([]);
-  const local: any = localStorage.getItem("local");
+  const local: string | null = localStorage.getItem("local");
 
   useEffect(() => {
     if (local) {

@@ -6,11 +6,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import "../../styles/admin/signin/AdminSignin.css";
 import { ApplicationContext } from "../../context/application/ApplicationContext";
 import { useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
 import env from "../../application/environment/env.json";
-import { useCookies } from "react-cookie";
 import Helmet from "react-helmet";
 import { Inputs } from "../../types/admin/AdminPagesTypes";
 
@@ -31,27 +30,26 @@ const schema = yup
 
 const AdminPages: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
-  const [cookies, setCookie] = useCookies(["local"]);
   const mutation = useMutation((identification: any) => {
     return axios
       .post(`${env.host}/api/login`, identification)
       .then((result) => {
         if (result.data.success === true) {
-          setCookie("local", result.data.access_token);
+          localStorage.setItem("local", result.data.access_token);
           setJwtDecode(result.data.access_token);
-          history.push("/admin/dashboard");
+          window.location.href = "/admin/dashboard";
         } else {
           setError(true);
         }
       });
   });
   const { pathname } = useLocation();
-  const history = useHistory();
+  const local: string | null = localStorage.getItem("local");
   useEffect(() => {
-    if (cookies.local) {
-      history.push("/admin/dashboard");
+    if (local) {
+      window.location.href = "/admin/dashboard";
     }
-  }, [cookies.local]);
+  }, [local]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
