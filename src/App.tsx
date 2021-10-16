@@ -6,10 +6,7 @@ import { CookiesProvider } from "react-cookie";
 import Routers from "./constants/Routes";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-
-interface Props {
-  access_token?: String;
-}
+import { Props } from "./types/token/TokenTypes";
 
 const client = new QueryClient();
 
