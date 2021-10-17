@@ -1,6 +1,40 @@
+import axios from "axios";
 import React from "react";
+import { useMutation } from "react-query";
+import env from "../../application/environment/env.json";
+import { ContactInputs } from "../../types/contact/ContactTypes";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup
+  .object()
+  .shape({
+    username: yup.string().trim().required("Please enter a username"),
+    email: yup
+      .string()
+      .trim()
+      .required("Please enter a email")
+      .matches(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Incorrect validation"
+      ),
+    subject: yup.string().trim().required("Please enter a subject"),
+    message: yup.string().trim().required("Please enter a message"),
+  })
+  .required();
 
 const Contact: React.FC = () => {
+  const mutation = useMutation((identification: any) => {
+    return axios.post(`${env.host}/api/contact`, identification);
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ContactInputs>({
+    resolver: yupResolver(schema),
+  });
   return (
     <>
       <section id="contact" className="contact">
@@ -61,14 +95,19 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="col-lg-6">
-              <form className="php-email-form">
+              <form
+                className="php-email-form"
+                onSubmit={handleSubmit((data: ContactInputs) => {
+                  console.log(data);
+                })}
+              >
                 <div className="row gy-4">
                   <div className="col-md-6">
                     <input
                       type="text"
-                      name="name"
                       className="form-control"
                       placeholder="Your Name"
+                      {...register("username")}
                     />
                   </div>
 
@@ -76,8 +115,8 @@ const Contact: React.FC = () => {
                     <input
                       type="email"
                       className="form-control"
-                      name="email"
                       placeholder="Your Email"
+                      {...register("email")}
                     />
                   </div>
 
@@ -85,27 +124,22 @@ const Contact: React.FC = () => {
                     <input
                       type="text"
                       className="form-control"
-                      name="subject"
                       placeholder="Subject"
+                      {...register("subject")}
                     />
                   </div>
 
                   <div className="col-md-12">
                     <textarea
                       className="form-control"
-                      name="message"
                       rows={6}
                       placeholder="Message"
+                      {...register("message")}
                     ></textarea>
                   </div>
 
                   <div className="col-md-12 text-center">
-                    <div className="loading">Loading</div>
-                    <div className="error-message"></div>
-                    <div className="sent-message">
-                      Your message has been sent. Thank you!
-                    </div>
-
+                    <div className="error-message">1</div>
                     <button type="submit">Send Message</button>
                   </div>
                 </div>
