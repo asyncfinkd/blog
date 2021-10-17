@@ -19,4 +19,7 @@ app.use("/api", Login);
 const Events = require("./routes/events/EventsRouter");
 app.use("/api", Events);
 
+const Contacts = require("./routes/contacts/ContactsRouter");
+app.use("/api", Contacts);
+
 Application.start(3001, app);
