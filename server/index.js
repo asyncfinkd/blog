@@ -1,19 +1,16 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const compression = require("compression");
 const cors = require("cors");
+const Application = require("./lib/app/ApplicationStart");
+const Connect = require("./lib/connect/Connect");
 
 const app = express();
 app.use(compression());
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(
-  "mongodb+srv://giga:vivomini@rest.nl9di.mongodb.net/blog?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    console.log("Connected to MongoDB");
-  }
+Connect.DB(
+  "mongodb+srv://giga:vivomini@rest.nl9di.mongodb.net/blog?retryWrites=true&w=majority"
 );
 
 const Login = require("./routes/user/login");
@@ -22,8 +19,4 @@ app.use("/api", Login);
 const Events = require("./routes/events/EventsRouter");
 app.use("/api", Events);
 
-const PORT = process.env.PORT || 3001;
-
-app.listen(PORT, () => {
-  console.log(`server started at ${PORT}`);
-});
+Application.start(3001, app);
