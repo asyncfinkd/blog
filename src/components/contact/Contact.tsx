@@ -51,7 +51,7 @@ const Contact: React.FC = () => {
   return (
     <>
       <ToastContainer />
-      <section id="contact" className="contact">
+      <section className="contact">
         <div className="container aos-init aos-animate" data-aos="fade-up">
           <header className="section-header">
             <h2>Contact</h2>
