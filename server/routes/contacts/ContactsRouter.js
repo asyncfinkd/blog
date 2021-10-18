@@ -10,27 +10,27 @@ router.route("/contact").post(async (req, res) => {
       res.status(200).json({ success: true });
     });
 
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: `${env.user}`,
-        pass: `${env.pass}`,
-      },
-    });
+    // let transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: `${env.user}`,
+    //     pass: `${env.pass}`,
+    //   },
+    // });
 
-    let mailOptions = {
-      from: `${env.user}`,
-      to: req.body.email,
-      subject: req.body.subject,
-      html: `
-          <h1>Hello.</h1>
-        `,
-    };
+    // let mailOptions = {
+    //   from: `${env.user}`,
+    //   to: req.body.email,
+    //   subject: req.body.subject,
+    //   html: `
+    //       <h1>Hello.</h1>
+    //     `,
+    // };
 
-    transporter.sendMail(mailOptions, function (err, data) {
-      if (err) console.log("error occurs: ", err);
-      else console.log("email sent");
-    });
+    // transporter.sendMail(mailOptions, function (err, data) {
+    //   if (err) console.log("error occurs: ", err);
+    //   else console.log("email sent");
+    // });
   } catch (err) {
     res.status(404).json({ msg: "Error", err });
   }

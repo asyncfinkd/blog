@@ -6,8 +6,10 @@ import { ContactInputs } from "types/contact/ContactTypes";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ToastContainer, toast } from "react-toastify";
 
 const schema = yup
+
   .object()
   .shape({
     username: yup.string().trim().required("Please enter a username"),
@@ -25,18 +27,29 @@ const schema = yup
   .required();
 
 const Contact: React.FC = () => {
-  const mutation = useMutation((identification: any) => {
-    return axios.post(`${env.host}/api/contact`, identification);
-  });
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<ContactInputs>({
     resolver: yupResolver(schema),
   });
+
+  const mutation = useMutation((identification: any) => {
+    return axios
+      .post(`${env.host}/api/contact`, identification)
+      .then((result) => {
+        setValue("username", "");
+        setValue("email", "");
+        setValue("subject", "");
+        setValue("message", "");
+        toast.success("Your Application Sent Success");
+      });
+  });
   return (
     <>
+      <ToastContainer />
       <section id="contact" className="contact">
         <div className="container aos-init aos-animate" data-aos="fade-up">
           <header className="section-header">
@@ -98,7 +111,12 @@ const Contact: React.FC = () => {
               <form
                 className="php-email-form"
                 onSubmit={handleSubmit((data: ContactInputs) => {
-                  console.log(data);
+                  mutation.mutate({
+                    username: data.username,
+                    email: data.email,
+                    subject: data.email,
+                    message: data.message,
+                  });
                 })}
               >
                 <div className="row gy-4">
@@ -139,7 +157,6 @@ const Contact: React.FC = () => {
                   </div>
 
                   <div className="col-md-12 text-center">
-                    <div className="error-message">1</div>
                     <button type="submit">Send Message</button>
                   </div>
                 </div>
