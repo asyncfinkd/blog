@@ -22,7 +22,7 @@ const Blog: React.FC = () => {
 
           <div className="row">
             {!isLoading &&
-              data.map((item: any) => {
+              data.slice(0, 3).map((item: any) => {
                 return (
                   <>
                     <div className="col-lg-4">

@@ -8,6 +8,7 @@ import AdminPages from "pages/admin/AdminPages";
 import IndexPages from "pages/index/IndexPages";
 import PartnersPages from "pages/partners/PartnersPages";
 import ContactPages from "pages/contact/ContactPages";
+import BlogPages from "pages/blog/BlogPages";
 
 const Routers: React.FC = () => {
   const routes = [
@@ -19,6 +20,11 @@ const Routers: React.FC = () => {
     {
       path: "/about",
       ComponentToRender: AboutPages,
+      GlobalComponents: true,
+    },
+    {
+      path: "/blog",
+      ComponentToRender: BlogPages,
       GlobalComponents: true,
     },
     {
