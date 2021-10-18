@@ -12,7 +12,7 @@ const BlogPages: React.FC = () => {
           justifyContent: "center",
         }}
       >
-        <Blog />
+        <Blog showMany={true} />
       </div>
     </>
   );

@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 import env from "application/environment/env.json";
 
-const Blog: React.FC = () => {
+interface Props {
+  showMany?: boolean;
+}
+
+const Blog: React.FC<Props> = ({ showMany }) => {
   const [data, setData] = useState([]);
   const fetchEvents = async () => {
     await axios.get(`${env.host}/api/get/events`).then((result: any) => {
@@ -22,7 +26,7 @@ const Blog: React.FC = () => {
 
           <div className="row">
             {!isLoading &&
-              data.slice(0, 3).map((item: any) => {
+              data.map((item: any) => {
                 return (
                   <>
                     <div className="col-lg-4">
