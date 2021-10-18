@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import Partners from "../../components/partners/Partners";
+import Partners from "components/partners/Partners";
 
 const PartnersPages: React.FC = () => {
   return (

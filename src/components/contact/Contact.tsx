@@ -1,8 +1,8 @@
 import axios from "axios";
 import React from "react";
 import { useMutation } from "react-query";
-import env from "../../application/environment/env.json";
-import { ContactInputs } from "../../types/contact/ContactTypes";
+import env from "application/environment/env.json";
+import { ContactInputs } from "types/contact/ContactTypes";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";

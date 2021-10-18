@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import env from "../../application/environment/env.json";
+import env from "application/environment/env.json";
 
 const Blog: React.FC = () => {
   const [data, setData] = useState([]);

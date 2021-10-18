@@ -1,16 +1,16 @@
 import React from "react";
 import { useCookies } from "react-cookie";
 import { Route } from "react-router-dom";
-import Footer from "../components/footer/Footer";
-import Header from "../components/header/Header";
-import AboutPages from "../pages/about/AboutPages";
-import AdminDashboardPages from "../pages/admin/AdminDashboardPages";
-import AdminPages from "../pages/admin/AdminPages";
-import IndexPages from "../pages/index/IndexPages";
-import PartnersPages from "../pages/partners/PartnersPages";
+import Footer from "components/footer/Footer";
+import Header from "components/header/Header";
+import AboutPages from "pages/about/AboutPages";
+import AdminDashboardPages from "pages/admin/AdminDashboardPages";
+import AdminPages from "pages/admin/AdminPages";
+import IndexPages from "pages/index/IndexPages";
+import PartnersPages from "pages/partners/PartnersPages";
 
-const Routers = () => {
-  const [cookies, setCookie] = useCookies(['local']);
+const Routers: React.FC = () => {
+  const [cookies, setCookie] = useCookies(["local"]);
 
   const routes = [
     {

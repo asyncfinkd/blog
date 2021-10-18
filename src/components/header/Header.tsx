@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { useToggle } from "../../lib/use-toggle";
+import { useToggle } from "lib/use-toggle";
 
 const Header: React.FC = () => {
   const [showHeader, setShowHeader] = useToggle();

@@ -1,17 +1,17 @@
 import React, { useContext, useEffect } from "react";
-import { useToggle } from "../../lib/use-toggle";
+import { useToggle } from "lib/use-toggle";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import "../../styles/admin/signin/AdminSignin.css";
-import { ApplicationContext } from "../../context/application/ApplicationContext";
+import "styles/admin/signin/AdminSignin.css";
+import { ApplicationContext } from "context/application/ApplicationContext";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
-import env from "../../application/environment/env.json";
+import env from "application/environment/env.json";
 import Helmet from "react-helmet";
-import { Inputs } from "../../types/admin/AdminPagesTypes";
+import { Inputs } from "types/admin/AdminPagesTypes";
 
 const schema = yup
   .object()
