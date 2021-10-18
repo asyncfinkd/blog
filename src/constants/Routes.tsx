@@ -8,6 +8,7 @@ import AdminDashboardPages from "pages/admin/AdminDashboardPages";
 import AdminPages from "pages/admin/AdminPages";
 import IndexPages from "pages/index/IndexPages";
 import PartnersPages from "pages/partners/PartnersPages";
+import ContactPages from "pages/contact/ContactPages";
 
 const Routers: React.FC = () => {
   const [cookies, setCookie] = useCookies(["local"]);
@@ -21,6 +22,11 @@ const Routers: React.FC = () => {
     {
       path: "/about",
       ComponentToRender: AboutPages,
+      GlobalComponents: true,
+    },
+    {
+      path: "/contact",
+      ComponentToRender: ContactPages,
       GlobalComponents: true,
     },
     {

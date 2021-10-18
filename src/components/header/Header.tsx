@@ -72,7 +72,7 @@ const Header: React.FC = () => {
                 </ul>
               </li>
               <li>
-                <a className="nav-link scrollto" href="#contact">
+                <a className="nav-link scrollto" href="/contact">
                   Contact
                 </a>
               </li>
