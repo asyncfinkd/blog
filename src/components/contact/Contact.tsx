@@ -9,7 +9,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ToastContainer, toast } from "react-toastify";
 
 const schema = yup
-
   .object()
   .shape({
     username: yup.string().trim().required("Please enter a username"),
@@ -39,12 +38,14 @@ const Contact: React.FC = () => {
   const mutation = useMutation((identification: any) => {
     return axios
       .post(`${env.host}/api/contact`, identification)
-      .then((result) => {
-        setValue("username", "");
-        setValue("email", "");
-        setValue("subject", "");
-        setValue("message", "");
-        toast.success("Your Application Sent Success");
+      .then((result: any) => {
+        if (result.success == true) {
+          setValue("username", "");
+          setValue("email", "");
+          setValue("subject", "");
+          setValue("message", "");
+          toast.success("Your Application Sent Success");
+        }
       });
   });
   return (
